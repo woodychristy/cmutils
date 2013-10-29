@@ -1,1 +1,9 @@
-Just a repo with some useful CM utils.
+Just a repo with some useful CM utils.  The current main thing is to fetch the MapReduce Config files from the cluster and merge into one single XML.
+
+
+In order to build just do mvn clean install.
+
+In order to run it is just:
+
+java -jar CMConfigFileUtils-0.0.1-SNAPSHOT.jar cmHostName userName password
+
