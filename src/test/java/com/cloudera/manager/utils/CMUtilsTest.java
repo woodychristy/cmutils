@@ -14,7 +14,6 @@ import com.cloudera.api.ApiRootResource;
 import com.cloudera.api.ClouderaManagerClientBuilder;
 import com.cloudera.api.DataView;
 import com.cloudera.api.model.ApiCluster;
-import com.cloudera.api.model.ApiClusterList;
 import com.cloudera.api.v3.ClustersResourceV3;
 import com.cloudera.api.v3.RootResourceV3;
 
