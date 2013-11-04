@@ -101,17 +101,19 @@ public class Utils {
 	 * Merge xml configuration files into one larger config file.
 	 *
 	 * @param dir Where all the configuration files are located in one directory. Will merger all files that end with .xml
+	 * @param fileName The name of the final XML file. All spaces will be removed to make it easier to deal with final file
 	 * @return the file
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public static File mergeXMLConfigFiles(File dir) throws IOException {
+	public static File mergeXMLConfigFiles(File dir, String fileName) throws IOException {
 
 		if (null == dir)
 			return null;
 
 	
+		
 		File mergedFile = new File(Utils.createTempDirectory() + DIR_SEP
-				+ "merged.xml");
+				+ fileName.replaceAll("\\s+", ""));
 		StringBuffer sb = new StringBuffer(
 				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NEW_LINE
 						+ "<configuration>");
