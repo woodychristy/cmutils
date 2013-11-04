@@ -1,4 +1,4 @@
-Just a repo with some useful CM utils.  The current main thing is to fetch the MapReduce Config files from the cluster and merge into one single XML.
+Just a repo with some useful CM utils.  The current main thing is to fetch all of the MapReduce Config files for each cluster and merge into one single XML per cluster.
 
 
 In order to build just do mvn clean install.
