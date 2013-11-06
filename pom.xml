@@ -10,7 +10,7 @@
 		<dependency>
 			<groupId>com.cloudera.api</groupId>
 			<artifactId>cloudera-manager-api</artifactId>
-			<version>4.7.0</version>  <!-- Or the CM version you have -->
+			<version>4.7.3</version>  <!-- Or the CM version you have -->
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

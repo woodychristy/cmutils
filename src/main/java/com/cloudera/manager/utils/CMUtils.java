@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import com.cloudera.api.model.ApiParcel;
+import com.cloudera.api.model.ApiParcelList;
+import com.cloudera.api.v5.ClustersResourceV5;
+import com.cloudera.api.v5.RootResourceV5;
 import org.apache.commons.io.FileUtils;
 
 import com.cloudera.api.ApiRootResource;
@@ -21,9 +25,13 @@ import com.cloudera.api.v3.ServicesResourceV3;
  */
 public class CMUtils {
 
+    public final static String PARCEL_STAGE_ACTIVATED="ACTIVATED";
+    public final static String PRODUCT_CDH="CDH";
+    public final static String UNKNOWN_VERSION="UNKNOWN";
+
 	/**
 	 * Gets the config files.
-	 * 
+	 *
 	 * @param hostname
 	 *            the hostname where Cloudera Manager is running
 	 * @param username
@@ -63,9 +71,8 @@ public class CMUtils {
 
 				if (service.getType().equals("MAPREDUCE")) {
 
-					configFiles.put(cluster.getName(), Utils
-							.unzipConfig(getConfigFiles(servicesResource,
-									service.getName())));
+					configFiles.put(cluster.getName(), Utils.unzipConfig(getConfigFiles(servicesResource,
+                            service.getName())));
 
 				}
 
@@ -76,7 +83,7 @@ public class CMUtils {
 
 	/**
 	 * Gets the config files.
-	 * 
+	 *
 	 * @param servicesResource
 	 *            the services resource
 	 * @param serviceName
@@ -96,5 +103,45 @@ public class CMUtils {
 		return f;
 
 	}
+
+
+
+    public static HashMap<String, String> getCDHVersion(String hostname,
+                                                        String username, String password) {
+
+        ApiRootResource root = new ClouderaManagerClientBuilder()
+                .withHost(hostname).withUsernamePassword(username, password)
+                .build();
+        RootResourceV5 v3 = root.getRootV5();
+
+        ClustersResourceV5 clustersResource = v3.getClustersResource();
+
+        HashMap<String, String> versions = new HashMap<String, String>(clustersResource.readClusters(DataView.FULL).size());
+        for (ApiCluster cluster : clustersResource.readClusters(DataView.FULL)) {
+
+           ApiParcelList ap= clustersResource.getParcelsResource(cluster.getName()).readParcels(DataView.FULL) ;
+
+            for (ApiParcel p: ap){
+                if(p.getStage().equals(PARCEL_STAGE_ACTIVATED)&& p.getProduct().equals(PRODUCT_CDH))
+                {
+                    versions.put(cluster.getName(), productVersionFromParcelVersion(p.getVersion()));
+                    break;
+                }
+
+
+
+            }
+            //couldn't find it set it to unknown
+            if(!versions.containsKey(cluster.getName()))  {
+                versions.put(cluster.getName(),UNKNOWN_VERSION);
+            }
+        }
+        return versions;
+
+    }
+             private static String productVersionFromParcelVersion( String parcelVersion){
+                 return parcelVersion.substring(0,parcelVersion.indexOf("-"));
+
+             }
 
 }

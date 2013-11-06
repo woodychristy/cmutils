@@ -1,10 +1,12 @@
 package com.cloudera.manager.utils;
 
+
 import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 
@@ -58,6 +60,21 @@ public class CMUtilsTest {
 		
 		
 	}
+
+    @Test
+    public void testGetCDHVersionStringStringString() {
+        HashMap<String,String> hm=CMUtils.getCDHVersion(CMHOSTNAME, USERNAME, PASSWORD);
+    hm.size();
+
+        ApiRootResource root = new ClouderaManagerClientBuilder()
+                .withHost(CMHOSTNAME).withUsernamePassword(USERNAME, PASSWORD)
+                .build();
+        RootResourceV3 v3 = root.getRootV3();
+        ClustersResourceV3 clustersResource = v3.getClustersResource();
+
+        Assert.assertEquals("Should return version for each cluster",clustersResource.readClusters(DataView.FULL).size(),hm.size());
+
+    }
 
 
 
