@@ -65,7 +65,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.cloudera.manager.utils.Example</mainClass>
+							<mainClass>com.cloudera.manager.utils.ConfigFileGenerator</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

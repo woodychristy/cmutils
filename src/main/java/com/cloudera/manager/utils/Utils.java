@@ -4,7 +4,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import static org.junit.Assert.fail;
 
 // TODO: Auto-generated Javadoc
 
@@ -45,7 +49,7 @@ public class Utils {
         try {
             zipIs = new ZipInputStream(new BufferedInputStream(
                     new FileInputStream(zipFile)));
-            ZipEntry zipEntry = null;
+            ZipEntry zipEntry;
 
             while ((zipEntry = zipIs.getNextEntry()) != null) {
                 byte[] tmp = new byte[4 * 1024];
@@ -54,12 +58,12 @@ public class Utils {
                         + zipEntry.getName();
 
                 zipOutput = new File(outputFilePath);
-                zipOutput.getParentFile().mkdirs();
+                boolean mkdirs = zipOutput.getParentFile().mkdirs();
 
 
                 FileOutputStream fos = new FileOutputStream(outputFilePath);
 
-                int size = 0;
+                int size;
                 while ((size = zipIs.read(tmp)) != -1) {
                     fos.write(tmp, 0, size);
                 }
@@ -71,7 +75,8 @@ public class Utils {
             if (null != zipIs)
                 zipIs.close();
         }
-
+        if (null == zipOutput)
+            return null;
         return zipOutput.getParentFile();
 
     }
@@ -122,27 +127,30 @@ public class Utils {
         File[] files = dir.listFiles();
         Pattern p = Pattern.compile("<configuration>(.*)</configuration>",
                 Pattern.DOTALL);
+        if (null != files) {
+            for (File f : files) {
 
-        for (File f : files) {
+                if (f.toString().toLowerCase().endsWith(".xml")) {
+                    String fileContents = fileContentsToString(f);
 
-            if (f.toString().toLowerCase().endsWith(".xml")) {
-                String fileContents = fileContentsToString(f);
-
-                Matcher m = p.matcher(fileContents);
-                while (m.find()) {
-                    sb.append(NEW_LINE);
-                    sb.append("<!-- start of ");
-                    sb.append(f.getName());
-                    sb.append("-->");
-                    sb.append(NEW_LINE);
-                    sb.append(m.group(1));
-                    sb.append(NEW_LINE);
-                    sb.append("<!-- end of ");
-                    sb.append(f.getName());
-                    sb.append("-->");
-                    sb.append(NEW_LINE);
+                    Matcher m = p.matcher(fileContents);
+                    while (m.find()) {
+                        sb.append(NEW_LINE);
+                        sb.append("<!-- start of ");
+                        sb.append(f.getName());
+                        sb.append("-->");
+                        sb.append(NEW_LINE);
+                        sb.append(m.group(1));
+                        sb.append(NEW_LINE);
+                        sb.append("<!-- end of ");
+                        sb.append(f.getName());
+                        sb.append("-->");
+                        sb.append(NEW_LINE);
+                    }
                 }
             }
+        } else {
+            sb.append("<!-- The directory was empty or not found and no files were found to merge -->");
         }
         sb.append(NEW_LINE);
         sb.append("</configuration>");
@@ -175,7 +183,7 @@ public class Utils {
 
     public static File downloadFilesFromDifferentHosts(Map<String, String> hosts, String path, String fileName) throws MalformedURLException, FileNotFoundException {
 
-        File download = new File(fileName);
+        File download = new File(path + DIR_SEP + fileName);
         for (Map.Entry<String, String> host : hosts.entrySet()) {
             URL url = new URL("http", host.getKey(), host.getValue() + path);
             try {
@@ -198,18 +206,38 @@ public class Utils {
     public static HashMap<String, String> nexusReposFromFile(File file) throws IOException {
 
         HashMap<String, String> repos = new HashMap<String, String>();
-        List<String> hosts;
-        for (String s : hosts = fileToStringList(file)) {
-            //file is space delimited
+
+        for (String s :  fileToStringList(file)) {
+
 
             String[] repo = s.split("\\s+");
-            if (null != repo && repo.length > 1) {
+            if (repo.length > 1) {
                 repos.put(repo[0], repo[1]);
             }
 
 
         }
         return repos;
+
+    }
+
+    public static void downloadDependencies(String nexusRepoFile, String finalPathForFiles, String CDHVersion) throws URISyntaxException, IOException {
+        HashMap<String, String> hosts = Utils.nexusReposFromFile(new File(ClassLoader.getSystemResource(nexusRepoFile).toURI()));
+
+
+        ArrayList<String> dependencies;
+        dependencies = (ArrayList<String>) Utils.fileToStringList(new File(ClassLoader.getSystemResource(CDHVersion).toURI()));
+        File f;
+        try {
+            for (String path : dependencies) {
+                f = Utils.downloadFilesFromDifferentHosts(hosts, finalPathForFiles, path.substring(path.lastIndexOf("/") + 1));
+                System.out.println("Donwloaded " + f.getAbsolutePath());
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            fail("Test Download Files had an exception: " + e.getMessage());
+        }
 
     }
 
