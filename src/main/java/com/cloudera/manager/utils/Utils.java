@@ -1,177 +1,216 @@
 package com.cloudera.manager.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.io.FileUtils;
-
 // TODO: Auto-generated Javadoc
+
 /**
  * The Class Utils.
  */
 public class Utils {
 
-	/** The Constant DIR_SEP. */
-	public final static String DIR_SEP = System.getProperty("file.separator");
-	
-	/** The Constant NEW_LINE. */
-	public final static String NEW_LINE = System.getProperty("line.separator");
+    /**
+     * The Constant DIR_SEP.
+     */
+    public final static String DIR_SEP = System.getProperty("file.separator");
+    /**
+     * The Constant NEW_LINE.
+     */
+    public final static String NEW_LINE = System.getProperty("line.separator");
 
-	/**
-	 * Unzip config.
-	 *
-	 * @param zipFile the zip file
-	 * @return the file
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public static File unzipConfig(File zipFile) throws IOException {
-		ZipInputStream zipIs = null;
-		File basePath = createTempDirectory();
-		File zipOutput = null;
-		basePath.deleteOnExit();
-		// FileUtils.getTempDirectory();
-		try {
-			zipIs = new ZipInputStream(new BufferedInputStream(
-					new FileInputStream(zipFile)));
-			ZipEntry zipEntry = null;
+    /**
+     * Unzip config.
+     *
+     * @param zipFile the zip file
+     * @return the file
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public static File unzipConfig(File zipFile) throws IOException {
+        ZipInputStream zipIs = null;
+        File basePath = createTempDirectory();
+        File zipOutput = null;
+        basePath.deleteOnExit();
+        // FileUtils.getTempDirectory();
+        try {
+            zipIs = new ZipInputStream(new BufferedInputStream(
+                    new FileInputStream(zipFile)));
+            ZipEntry zipEntry = null;
 
-			while ((zipEntry = zipIs.getNextEntry()) != null) {
-				byte[] tmp = new byte[4 * 1024];
+            while ((zipEntry = zipIs.getNextEntry()) != null) {
+                byte[] tmp = new byte[4 * 1024];
 
-				String outputFilePath = basePath.getAbsolutePath() + DIR_SEP
-						+ zipEntry.getName();
+                String outputFilePath = basePath.getAbsolutePath() + DIR_SEP
+                        + zipEntry.getName();
 
-				zipOutput = new File(outputFilePath);
-				zipOutput.getParentFile().mkdirs();
+                zipOutput = new File(outputFilePath);
+                zipOutput.getParentFile().mkdirs();
 
-			
-				FileOutputStream fos = new FileOutputStream(outputFilePath);
 
-				int size = 0;
-				while ((size = zipIs.read(tmp)) != -1) {
-					fos.write(tmp, 0, size);
-				}
-				fos.flush();
-				fos.close();
+                FileOutputStream fos = new FileOutputStream(outputFilePath);
 
-			}
-		} finally {
-			if (null != zipIs)
-				zipIs.close();
-		}
+                int size = 0;
+                while ((size = zipIs.read(tmp)) != -1) {
+                    fos.write(tmp, 0, size);
+                }
+                fos.flush();
+                fos.close();
 
-		return zipOutput.getParentFile();
+            }
+        } finally {
+            if (null != zipIs)
+                zipIs.close();
+        }
 
-	}
+        return zipOutput.getParentFile();
 
-	/**
-	 * Creates the temp directory.
-	 *
-	 * @return the file
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public static File createTempDirectory() throws IOException {
-		final File temp;
+    }
 
-		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+    /**
+     * Creates the temp directory.
+     *
+     * @return the file
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public static File createTempDirectory() throws IOException {
+        final File temp;
 
-		if (!(temp.delete())) {
-			throw new IOException("Could not delete temp file: "
-					+ temp.getAbsolutePath());
-		}
+        temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
 
-		if (!(temp.mkdir())) {
-			throw new IOException("Could not create temp directory: "
-					+ temp.getAbsolutePath());
-		}
+        if (!(temp.delete())) {
+            throw new IOException("Could not delete temp file: "
+                    + temp.getAbsolutePath());
+        }
 
-		return (temp);
-	}
+        if (!(temp.mkdir())) {
+            throw new IOException("Could not create temp directory: "
+                    + temp.getAbsolutePath());
+        }
 
-	/**
-	 * Merge xml configuration files into one larger config file.
-	 *
-	 * @param dir Where all the configuration files are located in one directory. Will merger all files that end with .xml
-	 * @param fileName The name of the final XML file. All spaces will be removed to make it easier to deal with final file
-	 * @return the file
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public static File mergeXMLConfigFiles(File dir, String fileName) throws IOException {
+        return (temp);
+    }
 
-		if (null == dir)
-			return null;
+    /**
+     * Merge xml configuration files into one larger config file.
+     *
+     * @param dir      Where all the configuration files are located in one directory. Will merger all files that end with .xml
+     * @param fileName The name of the final XML file. All spaces will be removed to make it easier to deal with final file
+     * @return the file
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public static File mergeXMLConfigFiles(File dir, String fileName) throws IOException {
 
-	
-		
-		File mergedFile = new File(Utils.createTempDirectory() + DIR_SEP
-				+ fileName.replaceAll("\\s+", ""));
-		StringBuffer sb = new StringBuffer(
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NEW_LINE
-						+ "<configuration>");
-		File[] files = dir.listFiles();
-		Pattern p = Pattern.compile("<configuration>(.*)</configuration>",
-				Pattern.DOTALL);
+        if (null == dir)
+            return null;
 
-		for (File f : files) {
 
-			if (f.toString().toLowerCase().endsWith(".xml")) {
-				String fileContents = fileContentsToString(f);
-	
-				Matcher m = p.matcher(fileContents);
-				while (m.find()) {
-					sb.append(NEW_LINE);
-					sb.append("<!-- start of ");
-					sb.append(f.getName());
-					sb.append("-->");
-					sb.append(NEW_LINE);
-					sb.append(m.group(1));
-					sb.append(NEW_LINE);
-					sb.append("<!-- end of ");
-					sb.append(f.getName());
-					sb.append("-->");
-					sb.append(NEW_LINE);
-				}
-			}
-		}
-		sb.append(NEW_LINE);
-		sb.append("</configuration>");
-		FileUtils.write(mergedFile, sb, "UTF-8");
-		return mergedFile;
-	}
+        File mergedFile = new File(Utils.createTempDirectory() + DIR_SEP
+                + fileName.replaceAll("\\s+", ""));
+        StringBuffer sb = new StringBuffer(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NEW_LINE
+                        + "<configuration>");
+        File[] files = dir.listFiles();
+        Pattern p = Pattern.compile("<configuration>(.*)</configuration>",
+                Pattern.DOTALL);
 
-	/**
-	 * File contents to string.
-	 *
-	 * @param file the file
-	 * @return the string
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	private static String fileContentsToString(File file) throws IOException {
+        for (File f : files) {
 
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String line = null;
-		StringBuilder stringBuilder = new StringBuilder();
-		String ls = System.getProperty("line.separator");
+            if (f.toString().toLowerCase().endsWith(".xml")) {
+                String fileContents = fileContentsToString(f);
 
-		while ((line = reader.readLine()) != null) {
-			stringBuilder.append(line);
-			stringBuilder.append(ls);
-		}
+                Matcher m = p.matcher(fileContents);
+                while (m.find()) {
+                    sb.append(NEW_LINE);
+                    sb.append("<!-- start of ");
+                    sb.append(f.getName());
+                    sb.append("-->");
+                    sb.append(NEW_LINE);
+                    sb.append(m.group(1));
+                    sb.append(NEW_LINE);
+                    sb.append("<!-- end of ");
+                    sb.append(f.getName());
+                    sb.append("-->");
+                    sb.append(NEW_LINE);
+                }
+            }
+        }
+        sb.append(NEW_LINE);
+        sb.append("</configuration>");
+        FileUtils.write(mergedFile, sb, "UTF-8");
+        return mergedFile;
+    }
+
+    /**
+     * File contents to string.
+     *
+     * @param file the file
+     * @return the string
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    private static String fileContentsToString(File file) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        String ls = System.getProperty("line.separator");
+
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+            stringBuilder.append(ls);
+        }
         reader.close();
-		return stringBuilder.toString();
+        return stringBuilder.toString();
 
-	}
+    }
 
-	
+    public static File downloadFilesFromDifferentHosts(Map<String, String> hosts, String path, String fileName) throws MalformedURLException, FileNotFoundException {
 
+        File download = new File(fileName);
+        for (Map.Entry<String, String> host : hosts.entrySet()) {
+            URL url = new URL("http", host.getKey(), host.getValue() + path);
+            try {
+                FileUtils.copyURLToFile(url, download, 10000, 10000);
+                return download;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        throw new FileNotFoundException("Unable to download " + fileName);
+    }
+
+    public static List<String> fileToStringList(File file) throws IOException {
+
+        return FileUtils.readLines(file);
+
+    }
+
+    public static HashMap<String, String> nexusReposFromFile(File file) throws IOException {
+
+        HashMap<String, String> repos = new HashMap<String, String>();
+        List<String> hosts;
+        for (String s : hosts = fileToStringList(file)) {
+            //file is space delimited
+
+            String[] repo = s.split("\\s+");
+            if (null != repo && repo.length > 1) {
+                repos.put(repo[0], repo[1]);
+            }
+
+
+        }
+        return repos;
+
+    }
 
 }
