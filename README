@@ -7,3 +7,11 @@ In order to run it is just:
 
 java -jar CMConfigFileUtils-0.0.1-SNAPSHOT.jar cmHostName userName password
 
+
+You can also download a given version of client jars doing the following:
+
+java -cp target/CMConfigFileUtils-0.0.1-SNAPSHOT.jar com.cloudera.manager.utils.DependencyDownloader /tmp/ 4.4.0
+
+C5 Beta
+
+java -cp target/CMConfigFileUtils-0.0.1-SNAPSHOT.jar com.cloudera.manager.utils.DependencyDownloader /tmp/ 5.0.0-beta-1
