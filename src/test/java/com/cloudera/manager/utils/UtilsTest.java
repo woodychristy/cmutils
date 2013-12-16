@@ -1,5 +1,6 @@
 package com.cloudera.manager.utils;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,12 +31,15 @@ public class UtilsTest {
         dependencies = (ArrayList<String>) Utils.fileToStringList(new File(ClassLoader.getSystemResource("cdh4.4.0.dependencies").toURI()));
 
         File testFile = null;
+        String tempPath =FileUtils.getTempDirectoryPath();
         try {
             for (String path : dependencies) {
-                testFile = Utils.downloadFilesFromDifferentHosts(hosts, path, path.substring(path.lastIndexOf("/")+1));
+                testFile = Utils.downloadFilesFromDifferentHosts(hosts, tempPath, path.substring(path.lastIndexOf("/")+1));
                 Assert.assertTrue(testFile.exists());
                 System.out.println(testFile.getAbsolutePath());
+                testFile.delete();
             }
+            FileUtils.forceDelete(new File(tempPath));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -52,7 +56,7 @@ public class UtilsTest {
         HashMap<String, String> testMap = Utils.nexusReposFromFile(new File(ClassLoader.getSystemResource("nexus.hosts").toURI()));
 
         for(String key : hosts.keySet()) {
-            Assert.assertEquals("Keys and Contents should match between test map and loaded map ",  hosts.get(key),testMap.get(key));
+            Assert.assertEquals("Keys and Contents should match between test map and loaded map ", hosts.get(key), testMap.get(key));
 
         }
 

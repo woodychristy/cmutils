@@ -1,6 +1,5 @@
-package main.java.com.cloudera.manager.utils;
+package com.cloudera.manager.utils;
 
-import com.cloudera.manager.utils.Utils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

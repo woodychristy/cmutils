@@ -2,7 +2,18 @@ package com.cloudera.manager.utils;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+
+
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -15,9 +26,8 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static org.junit.Assert.fail;
 
-// TODO: Auto-generated Javadoc
+
 
 /**
  * The Class Utils.
@@ -58,6 +68,7 @@ public class Utils {
                         + zipEntry.getName();
 
                 zipOutput = new File(outputFilePath);
+                @SuppressWarnings("Unused")
                 boolean mkdirs = zipOutput.getParentFile().mkdirs();
 
 
@@ -203,6 +214,21 @@ public class Utils {
 
     }
 
+
+    public static List<String> fileToStringList(InputStream is) throws IOException{
+        List<String> stringList = new ArrayList<String>();
+        BufferedReader in = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+        String s;
+        while((s=in.readLine() )!=null)
+        {
+            stringList.add(s);
+        }
+
+
+        return stringList;
+
+    }
+
     public static HashMap<String, String> nexusReposFromFile(File file) throws IOException {
 
         HashMap<String, String> repos = new HashMap<String, String>();
@@ -220,24 +246,38 @@ public class Utils {
         return repos;
 
     }
+    public static HashMap<String, String> nexusReposFromFile(InputStream is) throws IOException {
+
+        HashMap<String, String> repos = new HashMap<String, String>();
+
+        for (String s :  fileToStringList(is)) {
+
+
+            String[] repo = s.split("\\s+");
+            if (repo.length > 1) {
+                repos.put(repo[0], repo[1]);
+            }
+
+
+        }
+        return repos;
+
+    }
+
 
     public static void downloadDependencies(String nexusRepoFile, String finalPathForFiles, String CDHVersion) throws URISyntaxException, IOException {
-        HashMap<String, String> hosts = Utils.nexusReposFromFile(new File(ClassLoader.getSystemResource(nexusRepoFile).toURI()));
+        HashMap<String, String> hosts = Utils.nexusReposFromFile(ClassLoader.getSystemResourceAsStream(nexusRepoFile));
 
 
         ArrayList<String> dependencies;
-        dependencies = (ArrayList<String>) Utils.fileToStringList(new File(ClassLoader.getSystemResource(CDHVersion).toURI()));
+        dependencies = (ArrayList<String>) Utils.fileToStringList(ClassLoader.getSystemResourceAsStream(CDHVersion));
         File f;
-        try {
+
             for (String path : dependencies) {
                 f = Utils.downloadFilesFromDifferentHosts(hosts, finalPathForFiles, path.substring(path.lastIndexOf("/") + 1));
                 System.out.println("Donwloaded " + f.getAbsolutePath());
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            fail("Test Download Files had an exception: " + e.getMessage());
-        }
+
 
     }
 
