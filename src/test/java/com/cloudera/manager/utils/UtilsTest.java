@@ -34,7 +34,7 @@ public class UtilsTest {
         String tempPath =FileUtils.getTempDirectoryPath();
         try {
             for (String path : dependencies) {
-                testFile = Utils.downloadFilesFromDifferentHosts(hosts, tempPath, path.substring(path.lastIndexOf("/")+1));
+                testFile = Utils.downloadFilesFromDifferentHosts(hosts, tempPath,path ,path.substring(path.lastIndexOf("/")+1));
                 Assert.assertTrue(testFile.exists());
                 System.out.println(testFile.getAbsolutePath());
                 testFile.delete();

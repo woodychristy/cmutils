@@ -192,11 +192,12 @@ public class Utils {
 
     }
 
-    public static File downloadFilesFromDifferentHosts(Map<String, String> hosts, String path, String fileName) throws MalformedURLException, FileNotFoundException {
+    public static File downloadFilesFromDifferentHosts(Map<String, String> hosts,String path ,String jarUrl, String fileName) throws MalformedURLException, FileNotFoundException {
 
         File download = new File(path + DIR_SEP + fileName);
         for (Map.Entry<String, String> host : hosts.entrySet()) {
-            URL url = new URL("http", host.getKey(), host.getValue() + path);
+            URL url = new URL("http", host.getKey(), host.getValue() + jarUrl);
+            System.out.println("Downloading file from "+url.toString());
             try {
                 FileUtils.copyURLToFile(url, download, 10000, 10000);
                 return download;
@@ -274,7 +275,9 @@ public class Utils {
         File f;
 
             for (String path : dependencies) {
-                f = Utils.downloadFilesFromDifferentHosts(hosts, finalPathForFiles, path.substring(path.lastIndexOf("/") + 1));
+                System.out.println(path);
+                f = Utils.downloadFilesFromDifferentHosts(hosts, finalPathForFiles,path, path.substring(path.lastIndexOf("/") + 1));
+
                 System.out.println("Donwloaded " + f.getAbsolutePath());
             }
 
