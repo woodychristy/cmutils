@@ -84,7 +84,6 @@ log4j/log4j/1.2.17/log4j-1.2.17.jar
 org/antlr/antlr/3.4/antlr-3.4.jar
 com/sun/jersey/jersey-server/1.8/jersey-server-1.8.jar
 commons-digester/commons-digester/1.8/commons-digester-1.8.jar
-org/glassfish/grizzly/grizzly-framework/tests/grizzly-framework-tests.jar
 javax/activation/activation/1.1/activation-1.1.jar
 commons-lang/commons-lang/2.5/commons-lang-2.5.jar
 org/apache/hadoop/hadoop-annotations/2.0.0-cdh4.4.0/hadoop-annotations-2.0.0-cdh4.4.0.jar
@@ -112,8 +111,6 @@ commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar
 commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar
 org/json/json/20090211/json-20090211.jar
 org/python/jython-standalone/2.5.2/jython-standalone-2.5.2.jar
-com/sun/jersey/jersey-test-framework/jersey-test-framework-core/1.8/jersey-test-framework-core-1.8.jar
-org/apache/hbase/hbase/tests/hbase-tests.jar
 org/apache/derby/derby/10.6.1.0/derby-10.6.1.0.jar
 commons-configuration/commons-configuration/1.6/commons-configuration-1.6.jar
 org/datanucleus/datanucleus-api-jdo/3.2.1/datanucleus-api-jdo-3.2.1.jar
@@ -126,7 +123,6 @@ com/sun/jersey/jersey-test-framework/jersey-test-framework-grizzly2/1.8/jersey-t
 com/googlecode/javaewah/JavaEWAH/0.3.2/JavaEWAH-0.3.2.jar
 org/apache/hadoop/hadoop-yarn-common/2.0.0-cdh4.4.0/hadoop-yarn-common-2.0.0-cdh4.4.0.jar
 org/codehaus/jackson/jackson-xc/1.7.1/jackson-xc-1.7.1.jar
-org/apache/avro/avro-ipc/tests/avro-ipc-tests.jar
 com/sun/jersey/jersey-json/1.8/jersey-json-1.8.jar
 org/apache/commons/commons-math/2.1/commons-math-2.1.jar
 org/apache/hive/hive-jdbc/0.10.0-cdh4.4.0/hive-jdbc-0.10.0-cdh4.4.0.jar
