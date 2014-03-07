@@ -76,7 +76,6 @@ log4j/log4j/1.2.17/log4j-1.2.17.jar
 org/antlr/antlr/3.4/antlr-3.4.jar
 com/sun/jersey/jersey-server/1.8/jersey-server-1.8.jar
 commons-digester/commons-digester/1.8/commons-digester-1.8.jar
-org/glassfish/grizzly/grizzly-framework/tests/grizzly-framework-tests.jar
 javax/activation/activation/1.1/activation-1.1.jar
 org/apache/hadoop/hadoop-hdfs/2.0.0-cdh4.2.0/hadoop-hdfs-2.0.0-cdh4.2.0.jar
 commons-lang/commons-lang/2.5/commons-lang-2.5.jar
@@ -88,7 +87,6 @@ commons-beanutils/commons-beanutils-core/1.8.0/commons-beanutils-core-1.8.0.jar
 org/mortbay/jetty/jetty-util/6.1.26.cloudera.2/jetty-util-6.1.26.cloudera.2.jar
 aopalliance/aopalliance/1.0/aopalliance-1.0.jar
 javax/transaction/jta/1.1/jta-1.1.jar
-org/apache/hbase/hbase/tests/hbase-tests.jar
 org/apache/hadoop/hadoop-client/2.0.0-cdh4.2.0/hadoop-client-2.0.0-cdh4.2.0.jar
 org/apache/hadoop/hadoop-yarn-api/2.0.0-cdh4.2.0/hadoop-yarn-api-2.0.0-cdh4.2.0.jar
 javax/jdo/jdo2-api/2.3-ec/jdo2-api-2.3-ec.jar

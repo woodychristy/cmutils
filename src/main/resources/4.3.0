@@ -83,7 +83,6 @@ log4j/log4j/1.2.17/log4j-1.2.17.jar
 org/antlr/antlr/3.4/antlr-3.4.jar
 com/sun/jersey/jersey-server/1.8/jersey-server-1.8.jar
 commons-digester/commons-digester/1.8/commons-digester-1.8.jar
-org/glassfish/grizzly/grizzly-framework/tests/grizzly-framework-tests.jar
 javax/activation/activation/1.1/activation-1.1.jar
 commons-lang/commons-lang/2.5/commons-lang-2.5.jar
 xmlenc/xmlenc/0.52/xmlenc-0.52.jar
@@ -124,14 +123,12 @@ org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar
 com/sun/jersey/jersey-test-framework/jersey-test-framework-grizzly2/1.8/jersey-test-framework-grizzly2-1.8.jar
 com/googlecode/javaewah/JavaEWAH/0.3.2/JavaEWAH-0.3.2.jar
 org/codehaus/jackson/jackson-xc/1.7.1/jackson-xc-1.7.1.jar
-org/apache/avro/avro-ipc/tests/avro-ipc-tests.jar
 com/sun/jersey/jersey-json/1.8/jersey-json-1.8.jar
 org/apache/commons/commons-math/2.1/commons-math-2.1.jar
 javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar
 tomcat/jasper-runtime/5.5.23/jasper-runtime-5.5.23.jar
 org/apache/thrift/libthrift/0.9.0/libthrift-0.9.0.jar
 org/apache/hadoop/hadoop-mapreduce-client-core/2.0.0-cdh4.3.0/hadoop-mapreduce-client-core-2.0.0-cdh4.3.0.jar
-org/apache/hbase/hbase/tests/hbase-tests.jar
 org/mockito/mockito-all/1.8.5/mockito-all-1.8.5.jar
 org/apache/thrift/libfb303/0.9.0/libfb303-0.9.0.jar
 org/codehaus/jackson/jackson-jaxrs/1.7.1/jackson-jaxrs-1.7.1.jar

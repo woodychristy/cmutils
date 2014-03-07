@@ -57,7 +57,6 @@ org/cloudera/htrace/htrace-core/2.01/htrace-core-2.01.jar
 org/apache/hadoop/hadoop-common/2.2.0-cdh5.0.0-beta-2/hadoop-common-2.2.0-cdh5.0.0-beta-2.jar
 commons-lang/commons-lang/2.6/commons-lang-2.6.jar
 org/apache/hadoop/hadoop-mapreduce-client-core/2.2.0-cdh5.0.0-beta-2/hadoop-mapreduce-client-core-2.2.0-cdh5.0.0-beta-2.jar
-org/apache/avro/avro-ipc/tests/avro-ipc-tests.jar
 org/apache/hive/shims/hive-shims-0.23/0.12.0-cdh5.0.0-beta-2/hive-shims-0.23-0.12.0-cdh5.0.0-beta-2.jar
 org/codehaus/jackson/jackson-core-asl/1.5.2/jackson-core-asl-1.5.2.jar
 org/apache/hive/hive-shims/0.12.0-cdh5.0.0-beta-2/hive-shims-0.12.0-cdh5.0.0-beta-2.jar
@@ -112,7 +111,6 @@ tomcat/jasper-runtime/5.5.23/jasper-runtime-5.5.23.jar
 org/apache/hadoop/hadoop-mapreduce-client-jobclient/2.2.0-cdh5.0.0-beta-2/hadoop-mapreduce-client-jobclient-2.2.0-cdh5.0.0-beta-2.jar
 org/datanucleus/datanucleus-core/3.2.2/datanucleus-core-3.2.2.jar
 io/netty/netty/3.6.6.Final/netty-3.6.6.Final.jar
-org/apache/hbase/hbase-client/tests/hbase-client-tests.jar
 com/github/stephenc/findbugs/findbugs-annotations/1.3.9-1/findbugs-annotations-1.3.9-1.jar
 org/apache/hive/hive-ant/0.12.0-cdh5.0.0-beta-2/hive-ant-0.12.0-cdh5.0.0-beta-2.jar
 org/apache/thrift/libfb303/0.9.0/libfb303-0.9.0.jar
