@@ -195,15 +195,24 @@ public class Utils {
     public static File downloadFilesFromDifferentHosts(Map<String, String> hosts,String path ,String jarUrl, String fileName) throws MalformedURLException, FileNotFoundException {
 
         File download = new File(path + DIR_SEP + fileName);
+            String protocol = "http";
         for (Map.Entry<String, String> host : hosts.entrySet()) {
-            URL url = new URL("http", host.getKey(), host.getValue() + jarUrl);
+            if (host.getKey().contains("cloudera"))
+            {
+             protocol ="https";
+            }
+            else
+            {
+             protocol = "http";
+            }
+            URL url = new URL(protocol, host.getKey(), host.getValue() + jarUrl);
             System.out.println("Downloading file from "+url.toString());
             try {
                 FileUtils.copyURLToFile(url, download, 10000, 10000);
                 return download;
             } catch (IOException e) {
-                e.printStackTrace();
-            }
+                //Do nothing as retrying in loop will fall through if not found
+              }
 
         }
         throw new FileNotFoundException("Unable to download " + fileName);
