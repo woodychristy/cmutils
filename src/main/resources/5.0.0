@@ -95,8 +95,8 @@ org/mortbay/jetty/servlet-api-2.5/6.1.14/servlet-api-2.5-6.1.14.jar
 org/apache/avro/avro-ipc/1.7.5-cdh5.0.0/avro-ipc-1.7.5-cdh5.0.0.jar
 javax/xml/bind/jaxb-api/2.2.2/jaxb-api-2.2.2.jar
 org/apache/httpcomponents/httpcore/4.2.5/httpcore-4.2.5.jar
-org/xerial/snappy/snappy-java/1.0.5/snappy-java-1.0.5.jar
 org/codehaus/jackson/jackson-jaxrs/1.8.3/jackson-jaxrs-1.8.3.jar
+org/xerial/snappy/snappy-java/1.0.5/snappy-java-1.0.5.jar
 org/apache/hadoop/hadoop-mapreduce-client-shuffle/2.3.0-cdh5.0.0/hadoop-mapreduce-client-shuffle-2.3.0-cdh5.0.0.jar
 org/apache/hadoop/hadoop-common/2.3.0-cdh5.0.0/hadoop-common-2.3.0-cdh5.0.0.jar
 org/mortbay/jetty/jsp-api-2.1/6.1.14/jsp-api-2.1-6.1.14.jar
@@ -110,8 +110,8 @@ org/apache/hive/shims/hive-shims-common-secure/0.12.0-cdh5.0.0/hive-shims-common
 org/apache/hadoop/hadoop-mapreduce-client-common/2.3.0-cdh5.0.0/hadoop-mapreduce-client-common-2.3.0-cdh5.0.0.jar
 org/apache/hive/hive-metastore/0.12.0-cdh5.0.0/hive-metastore-0.12.0-cdh5.0.0.jar
 org/apache/ant/ant-launcher/1.9.1/ant-launcher-1.9.1.jar
-javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar
 tomcat/jasper-runtime/5.5.23/jasper-runtime-5.5.23.jar
+javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar
 org/datanucleus/datanucleus-core/3.2.2/datanucleus-core-3.2.2.jar
 io/netty/netty/3.6.6.Final/netty-3.6.6.Final.jar
 com/github/stephenc/findbugs/findbugs-annotations/1.3.9-1/findbugs-annotations-1.3.9-1.jar
